@@ -16,14 +16,15 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      devTools: false,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  /* const menu = Menu.buildFromTemplate([]);
-  Menu.setApplicationMenu(menu); */
+  const menu = Menu.buildFromTemplate([]);
+  Menu.setApplicationMenu(menu);
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, 'assets/home.html'));
+  mainWindow.loadFile(path.join(__dirname, 'assets/pages/home.html'));
 
   // Open the DevTools.
 
