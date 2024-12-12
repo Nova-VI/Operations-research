@@ -90,3 +90,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# Ignore index.js file
+index.js

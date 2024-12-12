@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    background: url(../images/powerplantbackground.jpg);
+    background-size: 500% 500%;
+    height: 100vh;
+    background-position: 0% 0%;
+    animation: animate 90s infinite ease-in-out;
+    display: flex;
+    justify-content: space-between;
+}
+
+@keyframes animate {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    25% {
+        background-position: 100% 100%;
+    }
+
+    50% {
+        background-position: 0% 100%;
+    }
+
+    75% {
+        background-position: 100% 0%;
+    }
+
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.menu-panel {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(40px);
+    width: fit-content;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 50px
+}
+
+.workspace {
+    flex-grow: 1;
+}
+
+.icon {
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
+    padding: 20px;
+    fill: white;
+    transition: .5s;
+}
+
+.block {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+}
+
+.label {
+    text-align: center;
+    transform: translateY(-20px);
+    font-size: 35px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    opacity: 0;
+    transition: 0.5s;
+    color: white;
+}
+
+.block:hover .label {
+    opacity: 1;
+    transform: translateY(-10px);
+    transition-delay: 0s;
+    color: #f1c40f;
+}
+
+.block:hover .icon {
+    transform: translateY(-10px);
+    fill: #f1c40f;
+}
