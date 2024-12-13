@@ -338,25 +338,17 @@ function generateTxModal(i, j) {
 }
 function generateMatrixes() {
     for (let i = 0; i < plants.length; i++) {
-        let row = [];
+        let row1 = [];
+        let row2 = [];
+        let row3 = [];
         for (let j = 0; j < cities.length; j++) {
-            row.push(Math.random() * 0.05);
+            row1.push(Math.random() * 0.05);
+            row2.push(Math.random() * plants[i].dynamicCost / 2);
+            row3.push(Math.random() * cities[j].demand / 2 + cities[j].demand / 2);
         }
-        txLossMatrix.push(row);
-    }
-    for (let i = 0; i < plants.length; i++) {
-        let row = [];
-        for (let j = 0; j < cities.length; j++) {
-            row.push(Math.random() * plants[i].dynamicCost / 2);
-        }
-        txCostMatrix.push(row)
-    }
-    for (let i = 0; i < plants.length; i++) {
-        let row = [];
-        for (let j = 0; j < cities.length; j++) {
-            row.push(Math.random() * 50 + cities[j].demand / 2);
-        }
-        txCapacityMatrix.push(row)
+        txLossMatrix.push(row1);
+        txCostMatrix.push(row2);
+        txCapacityMatrix.push(row3);
     }
 }
 setTxBtn.onclick = function () {
