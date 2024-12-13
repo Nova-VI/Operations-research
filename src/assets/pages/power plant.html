@@ -6,12 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Power Plant</title>
     <link rel="stylesheet" href="../style/power plant.css">
+    <script>
+        window.$ = window.jQuery = require("../../../node_modules/jquery/dist/jquery.min.js");
+    </script>
+    <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../../node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
 </head>
 
 <body>
     <div class="container">
+        <svg xmlns="http://www.w3.org/2000/svg"
+            style="position: absolute; top:0; right:0; margin:20px;height: 60px; width: 60px; fill: white; cursor:pointer;z-index: 10;"
+            onclick="window.location.href = 'home.html';"
+            viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path
+                d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z" />
+        </svg>
         <div class="menu-panel">
-            <div class="block">
+            <div class="block" id="add-city">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon"
                     viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                     <path
@@ -21,7 +33,7 @@
                     Add a city
                 </p>
             </div>
-            <div class="block">
+            <div class="block" id="add-plant">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon"
                     viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                     <path
@@ -33,10 +45,62 @@
             </div>
 
         </div>
-        <div class="workspace">
+        <div class="workspace" id="workspace">
+            <div class="button-panel">
+                <button id="transmissionButton"> Set transmission values</button>
+                <button id="solveButton"> Solve </button>
+            </div>
         </div>
     </div>
-    <script src="../script/power plant.js"></script>
+
+    <div id="addCityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeCityModal">&times;</span>
+            <h2>Add City</h2>
+            <div class="input-block">
+                <p class="input-label">City Name</p>
+                <input type="text" id="cityName" name="cityName">
+            </div>
+            <div class="input-block">
+                <p class="input-label">Demand (kWh)</p>
+                <input type="text" id="cityDemand" name="cityDemand">
+            </div>
+            <button id="addCity" disabled>Create</button>
+        </div>
+    </div>
+    <div id="addPowerPlantModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closePowerPlantModal">&times;</span>
+            <h2>Add Power Plant</h2>
+            <div class="input-block">
+                <p class="input-label">Name</p>
+                <input type="text" id="PPName" name="PPName">
+            </div>
+            <div class="input-block">
+                <p class="input-label">Capacity</p>
+                <input type="text" id="capacity" name="capacity">
+            </div>
+            <div class="input-block">
+                <p class="input-label">Fixed Cost</p>
+                <input type="text" id="fixedCost" name="fixedCost">
+            </div>
+            <div class="input-block">
+                <p class="input-label">Cost per unit</p>
+                <input type="text" id="variableCost" name="variableCost">
+            </div>
+            <button id="addPP" disabled>Create</button>
+        </div>
+    </div>
+
+    <div id="txModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeCityModal">&times;</span>
+
+        </div>
+    </div>
+
+    <div id="backdrop" class="backdrop"></div>
+    <script src="../script/power plant.js" defer></script>
 </body>
 
 </html>

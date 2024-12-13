@@ -27,6 +27,8 @@
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
-    "interactjs": "^1.10.27"
+    "interactjs": "^1.10.27",
+    "jquery": "^3.7.1",
+    "jquery-ui": "^1.14.1"
   }
 }
