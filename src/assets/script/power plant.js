@@ -262,17 +262,17 @@ function generateTxModal(i, j) {
     content = `
             <div class="modal-content">
                 <span class="close" id="closeTxModal">&times;</span>
-                    <h2> Transmitting from ${plants[i].name} to ${cities[j].name}</h2>
+                    <h2> Delivering from ${plants[i].name} to ${cities[j].name}</h2>
                     <div class="input-block">
-                        <p class="input-label">Transmission Capacity</p>
+                        <p class="input-label">Delivery Capacity</p>
                         <input type="text" id="txCapacity">
                     </div>
                     <div class="input-block">
-                        <p class="input-label">Transmission Loss</p>
+                        <p class="input-label">Delivery Loss</p>
                         <input type="text" id="txLoss">
                     </div>
                     <div class="input-block">
-                        <p class="input-label">Transmission Cost per Unit</p>
+                        <p class="input-label">Delivery Cost per Unit</p>
                         <input type="text" id="txCost">
                     </div>
                     <button id="txConfirm" style="width:300px">Next</button>
