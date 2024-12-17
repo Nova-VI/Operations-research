@@ -140,7 +140,9 @@ document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
         hideElement(addCityModal);
         hideElement(addPowerPlantModal);
+        hideElement(txModal);
         hideElement(backdrop);
+
     }
 });
 inputs = document.querySelectorAll('input');
@@ -254,6 +256,8 @@ let txCapacityMatrix = [];
 solveBtn.onclick = function () {
     if (txCostMatrix.length == 0) {
         generateMatrixes();
+        let jsonData = generateJson(cities, plants, txLossMatrix, txCostMatrix, txCapacityMatrix);
+        sendJsonToApi(jsonData);
     }
 
 }
@@ -386,3 +390,24 @@ function generateJson(cities, plants, txLossMatrix, txCostMatrix, txCapacityMatr
 }
 
 
+async function sendJsonToApi(jsonData) {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/test', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Response from API:', result);
+        return result;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
