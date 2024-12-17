@@ -360,3 +360,29 @@ setTxBtn.onclick = function () {
     showElement(backdrop);
 
 }
+
+function generateJson(cities, plants, txLossMatrix, txCostMatrix, txCapacityMatrix) {
+    return {
+        cities: cities.map(city => ({
+            id: city.id,
+            name: city.name,
+            demand: city.demand
+        })),
+
+        powerplants: plants.map(plant => ({
+            id: plant.id,
+            name: plant.name,
+            capacity: plant.capacity,
+            fixedCost: plant.fixedCost,
+            dynamicCost: plant.dynamicCost
+        })),
+
+        "transmission cost per unit": txCostMatrix,
+
+        "transmission capacities": txCapacityMatrix,
+
+        "transmission loss": txLossMatrix
+    };
+}
+
+
