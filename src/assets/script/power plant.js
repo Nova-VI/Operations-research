@@ -348,7 +348,7 @@ function generateMatrixes() {
         for (let j = 0; j < cities.length; j++) {
             row1.push(Math.random() * 0.05);
             row2.push(Math.random() * plants[i].dynamicCost / 2);
-            row3.push(Math.random() * cities[j].demand / 2 + cities[j].demand / 2);
+            row3.push(Math.random() * 50 + cities[j].demand);
         }
         txLossMatrix.push(row1);
         txCostMatrix.push(row2);
