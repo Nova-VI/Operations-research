@@ -104,11 +104,14 @@ cityConfirmBtn.onclick = function () {
     hideElement(addCityModal);
     hideElement(backdrop);
 };
-
-powerPlantInputs = document.querySelectorAll('#addPowerPlantModal input');
+let reducedInput = false;
+let powerPlantInputs = document.querySelectorAll('#addPowerPlantModal input');
 powerPlantInputs.forEach(input => {
     input.addEventListener('input', function () {
-        if (disabledButton(powerPlantInputs)) {
+        if (document.getElementById("capacity").value != "" && document.getElementById("PPName").value != "" && plants.length == 0) {
+            powerPlantConfirmBtn.disabled = false;
+        }
+        else if (disabledButton(powerPlantInputs)) {
             powerPlantConfirmBtn.disabled = true;
         } else {
             powerPlantConfirmBtn.disabled = false;
@@ -121,6 +124,18 @@ powerPlantInputs.forEach(input => {
     });
 });
 powerPlantConfirmBtn.onclick = function () {
+    if (plants.length == 0) {
+        let deleteableElements = []
+        for (input of powerPlantInputs) {
+            if (input.value == "") {
+                deleteableElements.push(input.parentNode)
+            }
+        }
+        deleteableElements.forEach(element => {
+            element.parentNode.removeChild(element);
+        });
+        powerPlantInputs = document.querySelectorAll('#addPowerPlantModal input');
+    }
     addElement("plant");
     inputs = document.querySelectorAll('#addPowerPlantModal input');
     inputs.forEach(input => {
@@ -184,13 +199,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 const $workspace = $(".workspace");
-const elements = []; // Track element positions to avoid overlap
+const elements = [];
 
 function getRandomPosition(width, height) {
     const workspaceWidth = $workspace.width();
     const workspaceHeight = $workspace.height();
     x = Math.random() * (workspaceWidth - width);
     y = Math.random() * (workspaceHeight - height);
+    let overlap;
+    let i = 0;
+    do {
+        overlap = false;
+        for (const element of elements) {
+            const rect1 = { x: x, y: y, width: width, height: height };
+            const rect2 = { x: element.position().left, y: element.position().top, width: element.width(), height: element.height() };
+            if (!(rect1.x + rect1.width < rect2.x || rect1.x > rect2.x + rect2.width || rect1.y + rect1.height < rect2.y || rect1.y > rect2.y + rect2.height)) {
+                overlap = true;
+                x = Math.random() * (workspaceWidth - width);
+                y = Math.random() * (workspaceHeight - height);
+                break;
+            }
+        }
+        i++;
+        if (i > 1000) {
+            break;
+        }
+    } while (overlap);
 
     return { x, y };
 }
@@ -201,20 +235,21 @@ let cityCount = 0;
 let plantCount = 0;
 function addElement(type) {
     let svg;
-    let randomSize = Math.random() * 300 + 100;
     if (type === "plant") {
         let plantId = plantCount;
         plantCount++;
         let plantName = document.getElementById("PPName").value;
         let plantCapacity = document.getElementById("capacity").value * 1;
-        let plantFixedCost = document.getElementById("fixedCost").value * 1;
-        let plantDynamicCost = document.getElementById("variableCost").value * 1;
+        let plantFixedCost = null;
+        let plantDynamicCost = null;
+        if (document.getElementById("fixedCost")) {
+            plantFixedCost = document.getElementById("fixedCost").value * 1;
+        }
+        if (document.getElementById("variableCost")) {
+            plantDynamicCost = document.getElementById("variableCost").value * 1;
+        }
         let plant = { id: plantId, name: plantName, capacity: plantCapacity, fixedCost: plantFixedCost, dynamicCost: plantDynamicCost }
-        svg = `<svg xmlns="http://www.w3.org/2000/svg" class="icon" style="height:${randomSize}px;width:${randomSize}px;"
-                    viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                        d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z" />
-                </svg>
+        svg = `${getSVG("transmitter")}
                 <p class="element-name">${plantName}</p> 
                 `;
         plants.push(plant);
@@ -225,11 +260,7 @@ function addElement(type) {
         let cityName = document.getElementById("cityName").value;
         let cityDemand = document.getElementById("cityDemand").value * 1;
         let city = { id: cityId, name: cityName, demand: cityDemand }
-        svg = `<svg xmlns="http://www.w3.org/2000/svg" class="icon" style="height:${randomSize}px;width:${randomSize}px;"
-                    viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                        d="M480 48c0-26.5-21.5-48-48-48L336 0c-26.5 0-48 21.5-48 48l0 48-64 0 0-72c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 72-64 0 0-72c0-13.3-10.7-24-24-24S64 10.7 64 24l0 72L48 96C21.5 96 0 117.5 0 144l0 96L0 464c0 26.5 21.5 48 48 48l256 0 32 0 96 0 160 0c26.5 0 48-21.5 48-48l0-224c0-26.5-21.5-48-48-48l-112 0 0-144zm96 320l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16zM240 416l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16zM128 400c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32zM560 256c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0zM256 176l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16zM112 160c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0zM256 304c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32zM112 320l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16zm304-48l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16zM400 64c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0zm16 112l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16z" />
-                </svg>
+        svg = `${getSVG("person")}
                 <p class="element-name">${cityName}</p> `;
         cities.push(city);
     }
