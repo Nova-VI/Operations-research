@@ -438,6 +438,9 @@ function generateTxModal(i, j) {
     }
 }
 function generateMatrixes() {
+    txCapacityMatrix = []
+    txCostMatrix = []
+    txLossMatrix = []
     for (let i = 0; i < plants.length; i++) {
         let row1 = [];
         let row2 = [];
