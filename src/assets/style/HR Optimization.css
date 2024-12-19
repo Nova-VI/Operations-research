@@ -1,0 +1,303 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    background: url(../images/hrbackground.jpg);
+    background-size: 500% 500%;
+    height: 100vh;
+    background-position: 0% 0%;
+    animation: animate 90s infinite ease-in-out;
+    display: flex;
+    justify-content: space-between;
+}
+
+@keyframes animate {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    25% {
+        background-position: 100% 100%;
+    }
+
+    50% {
+        background-position: 0% 100%;
+    }
+
+    75% {
+        background-position: 100% 0%;
+    }
+
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.menu-panel {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(40px);
+    width: fit-content;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 50px
+}
+
+.workspace {
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.icon {
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
+    padding: 20px;
+    fill: white;
+    transition: .5s;
+}
+
+.workspace .icon {
+    width: 100px;
+    height: 100px;
+    margin-top: 20px;
+    padding: 20px;
+    fill: white;
+    transition: .5s;
+    stroke-width: 5px;
+    stroke: black;
+}
+
+.workspace .draggable {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.workspace .draggable .element-name {
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    color: white;
+}
+
+.workspace .button-panel {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 20px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.workspace .button-panel button {
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: fit-content;
+    height: 50px;
+    margin: 10px;
+    transition: 0.5s;
+    outline: none;
+}
+
+#transmissionButton {
+    background: none;
+    border: 2px solid #2a253a;
+    background: #41395a;
+    transition: 0.5s;
+}
+
+#transmissionButton:hover {
+    background: #2a253a;
+}
+
+#solveButton {
+    background: none;
+    border: 2px solid #f1c40f;
+    background-color: #f1c40fa6;
+    transition: 0.5s;
+}
+
+#solveButton:hover {
+    background: #f1c40f;
+}
+
+.block {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+}
+
+.label {
+    text-align: center;
+    transform: translateY(-40px);
+    font-size: 35px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    opacity: 0;
+    transition: 0.5s;
+    color: white;
+}
+
+.block:hover .label {
+    opacity: 1;
+    transform: translateY(-20px);
+    transition-delay: 0s;
+    color: #f1c40f;
+}
+
+.block:hover .icon {
+    transform: translateY(-10px);
+    fill: #f1c40f;
+}
+
+.modal {
+    opacity: 0;
+    position: fixed;
+    border-radius: 20px;
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -30%);
+    height: fit-content;
+    width: fit-content;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    transition: transform .7s, opacity .7s;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    width: 300px;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.modal-content .input-block {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.input-block input {
+    border: 2px solid black;
+    outline: none;
+    height: 50px;
+    padding: 0 10px;
+    font-size: 20px;
+    margin: 10px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+#txModal .input-block input {
+    width: 300px;
+}
+
+#txModal .modal-content {
+    width: 400px;
+}
+
+.input-block p {
+    position: absolute;
+    pointer-events: none;
+    transform: translateX(20px);
+    transition: 0.5s;
+    color: grey;
+    background-color: white;
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.modal-content h2 {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 20px;
+}
+
+.modal-content button {
+    background-color: #f1c40f;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 200px;
+    height: 50px;
+    transition: 0.5s;
+}
+
+.modal-content button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.input-label.active {
+    transform: translate(20px, -25px);
+
+    padding: 0 5px;
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.backdrop {
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: -1;
+    transition: 0.4s;
+}
+
+.modal.show {
+    opacity: 1;
+    z-index: 1001;
+    transform: translate(-50%, -70%);
+}
+
+.backdrop.show {
+    opacity: 1;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
