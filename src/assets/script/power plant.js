@@ -463,13 +463,13 @@ setTxBtn.onclick = function () {
 
 function generateJson(cities, plants, txLossMatrix, txCostMatrix, txCapacityMatrix) {
     return {
-        cities: cities.map(city => ({
+        recipients: cities.map(city => ({
             id: city.id,
             name: city.name,
             demand: city.demand
         })),
 
-        powerplants: plants.map(plant => ({
+        sources: plants.map(plant => ({
             id: plant.id,
             name: plant.name,
             capacity: plant.capacity,
@@ -477,11 +477,11 @@ function generateJson(cities, plants, txLossMatrix, txCostMatrix, txCapacityMatr
             dynamicCost: plant.dynamicCost
         })),
 
-        "transmission cost per unit": txCostMatrix,
+        "delivery cost per unit": txCostMatrix,
 
-        "transmission capacities": txCapacityMatrix,
+        "delivery capacities": txCapacityMatrix,
 
-        "transmission loss": txLossMatrix
+        "delivery loss": txLossMatrix
     };
 }
 
