@@ -96,8 +96,9 @@
     right: 0;
     bottom: 0;
     margin: 20px;
-    z-index: -1;
     opacity: 0;
+    cursor: pointer;
+    pointer-events: none;
     transition: opacity 0.5s;
 }
 
@@ -144,6 +145,12 @@
     flex-direction: column;
     text-align: center;
     cursor: pointer;
+    transition: 0.5s;
+}
+
+.block:not(#setSkills) {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .label {
@@ -197,7 +204,6 @@
     justify-content: center;
     align-items: center;
 }
-
 
 
 .modal-content .input-block {
@@ -261,9 +267,24 @@
     cursor: not-allowed;
 }
 
+.modal-content #skills-label {
+    margin: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#addSkillsModal textarea {
+    width: 300px;
+    height: 400px;
+    resize: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 15px;
+    padding: 10px;
+}
+
 .input-label.active {
     transform: translate(20px, -25px);
-
     padding: 0 5px;
     color: black;
     font-size: 15px;
@@ -293,11 +314,47 @@
 .modal.show {
     opacity: 1;
     z-index: 1001;
-    transform: translate(-50%, -70%);
+    transform: translate(-50%, -50%);
+}
+
+#addSkillsModal.show {
+    transform: translate(-50%, -50%);
 }
 
 .backdrop.show {
     opacity: 1;
     z-index: 1000;
     backdrop-filter: blur(5px);
+}
+
+#workerSkills,
+#shiftSkills {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
+
+label {
+    display: block;
+    width: 150px;
+    background-color: rgb(38, 141, 17, .1);
+    border: 2px solid rgb(38, 141, 17);
+    margin: 5px;
+    border-radius: 20px;
+    padding: 10px;
+    transition: .5s;
+    text-align: center;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+#addWorkerModal .modal-content,
+#shiftModal .modal-content {
+    width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
