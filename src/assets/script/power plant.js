@@ -90,6 +90,7 @@ cityInputs.forEach(input => {
     });
 });
 cityConfirmBtn.onclick = function () {
+    cityConfirmBtn.disabled = true;
     addElement("city");
     inputs = document.querySelectorAll('#addCityModal input');
     inputs.forEach(input => {
@@ -136,6 +137,7 @@ powerPlantConfirmBtn.onclick = function () {
         });
         powerPlantInputs = document.querySelectorAll('#addPowerPlantModal input');
     }
+    powerPlantConfirmBtn.disabled = true;
     addElement("plant");
     inputs = document.querySelectorAll('#addPowerPlantModal input');
     inputs.forEach(input => {
@@ -283,6 +285,8 @@ const setTxBtn = document.getElementById('transmissionButton');
 let txCostMatrix = [];
 let txLossMatrix = [];
 let txCapacityMatrix = [];
+let lossMatrixState = true;
+let capacityMatrixState = true;
 
 solveBtn.onclick = function () {
     if (txCostMatrix.length == 0) {
@@ -294,25 +298,64 @@ solveBtn.onclick = function () {
 }
 function generateTxModal(i, j) {
     const txModal = document.getElementById('txModal');
-    content = `
-            <div class="modal-content">
-                <span class="close" id="closeTxModal">&times;</span>
-                    <h2> Delivering from ${plants[i].name} to ${cities[j].name}</h2>
-                    <div class="input-block">
-                        <p class="input-label">Delivery Capacity</p>
-                        <input type="text" id="txCapacity">
-                    </div>
-                    <div class="input-block">
-                        <p class="input-label">Delivery Loss</p>
-                        <input type="text" id="txLoss">
-                    </div>
-                    <div class="input-block">
-                        <p class="input-label">Delivery Cost per Unit</p>
-                        <input type="text" id="txCost">
-                    </div>
-                    <button id="txConfirm" style="width:300px">Next</button>
-            </div>
-        `;
+    if (i == 0 && j == 0) {
+        content = `
+                <div class="modal-content">
+                    <span class="close" id="closeTxModal">&times;</span>
+                        <h2> Delivering from ${plants[i].name} to ${cities[j].name}</h2>
+                        <div class="input-block">
+                            <p class="input-label">Delivery Cost per Unit</p>
+                            <input type="text" id="txCost">
+                        </div>
+                        <div class="input-block">
+                            <p class="input-label">Delivery Capacity</p>
+                            <input type="text" id="txCapacity">
+                            <div style="position:absolute; right: 0px;transform:translateX(-55px);width:fit-content;cursor:pointer" id="txCapacityRmvBtn">
+                                ${getSVG("trash", 30, 30)}
+                            </div>
+                        </div>
+                        <div class="input-block" style="flex-grow: 1;">
+                            <p class="input-label">Delivery Loss</p>
+                            <input type="text" id="txLoss">
+                            <div style="position:absolute; right: 0px;transform:translateX(-55px);width:fit-content;cursor:pointer" id="txLossRmvBtn">
+                                ${getSVG("trash", 30, 30)}
+                            </div>
+                        </div>
+                        <button id="txConfirm" style="width:300px">Next</button>
+                </div>
+            `;
+
+    }
+    else {
+
+        content = `
+                <div class="modal-content">
+                        <span class="close" id="closeTxModal">&times;</span>
+                        <h2> Delivering from ${plants[i].name} to ${cities[j].name}</h2>
+                        <div class="input-block">
+                            <p class="input-label">Delivery Cost per Unit</p>
+                            <input type="text" id="txCost">
+                        </div>
+                `;
+        if (capacityMatrixState)
+            content += `
+                        <div class="input-block">
+                            <p class="input-label">Delivery Capacity</p>
+                            <input type="text" id="txCapacity">
+                        </div>
+                    `;
+        if (lossMatrixState)
+            content += `
+                        <div class="input-block">
+                            <p class="input-label">Delivery Loss</p>
+                            <input type="text" id="txLoss">
+                        </div>
+                    `;
+        content += `
+                        <button id="txConfirm" style="width:300px">Next</button>
+                </div >
+            `;
+    }
     txModal.innerHTML = content;
     const textInputs = document.querySelectorAll('#txModal input[type="text"]');
     const txConfirm = document.getElementById('txConfirm');
@@ -349,8 +392,13 @@ function generateTxModal(i, j) {
         hideElement(backdrop);
     };
     txConfirm.addEventListener('click', function () {
-        let txCapacity = document.getElementById('txCapacity').value;
-        let txLoss = document.getElementById('txLoss').value;
+        let txCapacity = ""
+        let txLoss = ""
+        if (document.getElementById('txLoss'))
+            txLoss = document.getElementById('txLoss').value;
+        if (document.getElementById("txCapacity"))
+            txCapacity = document.getElementById('txCapacity').value;
+
         let txCost = document.getElementById('txCost').value;
         if (txCapacity != "")
             txCapacityMatrix[i][j] = txCapacity * 1;
@@ -369,7 +417,22 @@ function generateTxModal(i, j) {
             hideElement(backdrop);
         }
     });
-
+    if (i == 0, j == 0) {
+        const txLossRmvBtn = document.getElementById('txLossRmvBtn');
+        const txCapacityRmvBtn = document.getElementById('txCapacityRmvBtn');
+        txCapacityRmvBtn.addEventListener('click', function () {
+            let inputBlock = document.getElementById("txCapacity").parentNode;
+            inputBlock.parentNode.removeChild(inputBlock);
+            capacityMatrixState = false;
+            txCapacityMatrix = null;
+        });
+        txLossRmvBtn.addEventListener('click', function () {
+            let inputBlock = document.getElementById("txLoss").parentNode;
+            inputBlock.parentNode.removeChild(inputBlock);
+            lossMatrixState = false;
+            txLossMatrix = null;
+        });
+    }
 }
 function generateMatrixes() {
     for (let i = 0; i < plants.length; i++) {
@@ -432,7 +495,7 @@ async function sendJsonToApi(jsonData) {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status} `);
         }
 
         const result = await response.json();
