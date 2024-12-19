@@ -423,18 +423,22 @@ function generateTxModal(i, j) {
     if (i == 0, j == 0) {
         const txLossRmvBtn = document.getElementById('txLossRmvBtn');
         const txCapacityRmvBtn = document.getElementById('txCapacityRmvBtn');
-        txCapacityRmvBtn.addEventListener('click', function () {
-            let inputBlock = document.getElementById("txCapacity").parentNode;
-            inputBlock.parentNode.removeChild(inputBlock);
-            capacityMatrixState = false;
-            txCapacityMatrix = null;
-        });
-        txLossRmvBtn.addEventListener('click', function () {
-            let inputBlock = document.getElementById("txLoss").parentNode;
-            inputBlock.parentNode.removeChild(inputBlock);
-            lossMatrixState = false;
-            txLossMatrix = null;
-        });
+        if (txCapacityRmvBtn) {
+            txCapacityRmvBtn.addEventListener('click', function () {
+                let inputBlock = document.getElementById("txCapacity").parentNode;
+                inputBlock.parentNode.removeChild(inputBlock);
+                capacityMatrixState = false;
+                txCapacityMatrix = null;
+            });
+        }
+        if (txLossRmvBtn) {
+            txLossRmvBtn.addEventListener('click', function () {
+                let inputBlock = document.getElementById("txLoss").parentNode;
+                inputBlock.parentNode.removeChild(inputBlock);
+                lossMatrixState = false;
+                txLossMatrix = null;
+            });
+        }
     }
 }
 function generateMatrixes() {
@@ -501,8 +505,10 @@ async function sendJsonToApi(jsonData) {
         }
 
         const result = await response.json();
+        localStorage.setItem("input1", JSON.stringify(jsonData));
+        localStorage.setItem("output1", JSON.stringify(result));
+        window.location.href = "../pages/outputpp.html";
         console.log('Response from API:', result);
-        return result;
     } catch (error) {
         console.error('Error:', error);
     }
