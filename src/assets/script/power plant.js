@@ -109,7 +109,7 @@ let reducedInput = false;
 let powerPlantInputs = document.querySelectorAll('#addPowerPlantModal input');
 powerPlantInputs.forEach(input => {
     input.addEventListener('input', function () {
-        if (document.getElementById("capacity").value != "" && document.getElementById("PPName").value != "" && plants.length == 0) {
+        if (document.getElementById("variableCost").value != "" && document.getElementById("PPName").value != "" && plants.length == 0) {
             powerPlantConfirmBtn.disabled = false;
         }
         else if (disabledButton(powerPlantInputs)) {
@@ -241,14 +241,14 @@ function addElement(type) {
         let plantId = plantCount;
         plantCount++;
         let plantName = document.getElementById("PPName").value;
-        let plantCapacity = document.getElementById("capacity").value * 1;
         let plantFixedCost = null;
-        let plantDynamicCost = null;
+        let plantDynamicCost = document.getElementById("variableCost").value * 1;
+        let plantCapacity = null;
+        if (document.getElementById("capacity")) {
+            plantCapacity = document.getElementById("capacity").value * 1;
+        }
         if (document.getElementById("fixedCost")) {
             plantFixedCost = document.getElementById("fixedCost").value * 1;
-        }
-        if (document.getElementById("variableCost")) {
-            plantDynamicCost = document.getElementById("variableCost").value * 1;
         }
         let plant = { id: plantId, name: plantName, capacity: plantCapacity, fixedCost: plantFixedCost, dynamicCost: plantDynamicCost }
         svg = `${getSVG("transmitter")}
@@ -291,14 +291,17 @@ let capacityMatrixState = true;
 solveBtn.onclick = function () {
     if (txCostMatrix.length == 0) {
         generateMatrixes();
-        let jsonData = generateJson(cities, plants, txLossMatrix, txCostMatrix, txCapacityMatrix);
-        sendJsonToApi(jsonData);
     }
+    let jsonData = generateJson(cities, plants, txLossMatrix, txCostMatrix, txCapacityMatrix);
+    sendJsonToApi(jsonData);
 
 }
 function generateTxModal(i, j) {
     const txModal = document.getElementById('txModal');
     if (i == 0 && j == 0) {
+        generateMatrixes();
+        capacityMatrixState = true;
+        lossMatrixState = true;
         content = `
                 <div class="modal-content">
                     <span class="close" id="closeTxModal">&times;</span>
@@ -450,13 +453,9 @@ function generateMatrixes() {
     }
 }
 setTxBtn.onclick = function () {
-    if (txCostMatrix.length == 0) {
-        generateMatrixes();
-    }
     generateTxModal(0, 0);
     showElement(txModal);
     showElement(backdrop);
-
 }
 
 function generateJson(cities, plants, txLossMatrix, txCostMatrix, txCapacityMatrix) {
