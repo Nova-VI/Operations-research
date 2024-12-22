@@ -16,13 +16,14 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      HideMenuBar: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'assets/pages/home.html'));
-
+  mainWindow.setMenuBarVisibility(false)
 };
 
 // This method will be called when Electron has finished

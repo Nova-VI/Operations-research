@@ -506,10 +506,13 @@ async function sendJsonToApi(jsonData) {
 
         const result = await response.json();
         localStorage.setItem("input1", JSON.stringify(jsonData));
-        localStorage.setItem("output1", JSON.stringify(result));
+        //localStorage.setItem("output1", JSON.stringify(result));
+        localStorage.setItem("generated_svg", JSON.stringify(result))
         window.location.href = "../pages/outputpp.html";
         console.log('Response from API:', result);
     } catch (error) {
+        localStorage.setItem("generated_svg",null)
+        window.location.href = "../pages/outputpp.html";
         console.error('Error:', error);
     }
 }

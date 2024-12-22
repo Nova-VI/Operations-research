@@ -144,7 +144,7 @@ function addElement(type) {
 }
 
 function generateButtons() {
-    if (locationCount > 1 && workerCount >= 1 || locationCount >= 1 && workerCount > 1) {
+    if ( locationCount >= 1 && workerCount > 10) {
         const buttonPanel = document.querySelector('.button-panel');
         buttonPanel.style.opacity = 1;
         buttonPanel.style.pointerEvents = 'auto';
@@ -183,11 +183,13 @@ function getRandomPosition(width, height) {
 const addWorkerBtn = document.getElementById('add-worker');
 const addLocationBtn = document.getElementById('add-location');
 const setSkillBtn = document.getElementById('setSkills');
+const genreateBtn= document.getElementById("generationButton")
 
 const addWorkerModal = document.getElementById('addWorkerModal');
 const addLocationModal = document.getElementById('addLocationModal');
 const addSkillsModal = document.getElementById('addSkillsModal');
 const addShiftModal = document.getElementById('shiftModal');
+const addGenerationModal = document.getElementById("addGenerationModal");
 
 const workerConfirmBtn = document.getElementById('addWorker');
 const locationPlantConfirmBtn = document.getElementById('setShift');
@@ -204,6 +206,7 @@ closeInterfaces.forEach(interface => {
         hideElement(addLocationModal);
         hideElement(addSkillsModal);
         hideElement(addShiftModal);
+        hideElement(addGenerationModal);
         hideElement(backdrop);
     };
 });
@@ -216,6 +219,12 @@ document.addEventListener('keydown', function (event) {
 
 setSkillBtn.onclick = function () {
     showElement(addSkillsModal);
+    showElement(backdrop);
+    document.querySelector("#skills").focus();
+};
+
+genreateBtn.onclick = function () {
+    showElement(addGenerationModal);
     showElement(backdrop);
     document.querySelector("#skills").focus();
 };
@@ -335,6 +344,34 @@ workerConfirmBtn.onclick = function () {
     hideElement(backdrop);
     generateButtons();
 };
+const generateBtnConfirm = document.getElementById("generateConfirm");
+const generationInputs = document.querySelectorAll("#addGenerationModal input[type=text]");
+generationInputs.forEach(input => {
+    input.addEventListener('input', function () {
+        if (emptyInput(generationInputs)) {
+            generateBtnConfirm.disabled = true;
+        } else {
+            generateBtnConfirm.disabled = false;
+        }
+
+    });
+    input.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            generateBtnConfirm.click();
+        }
+    });
+});
+generateBtnConfirm.onclick = function(){
+    let jsonData= {
+        "num_workers":document.getElementById("nbWorker").value*1,
+        "num_locations":document.getElementById("nbLocation").value*1,
+        "num_shifts_per_day":document.getElementById("nbShift").value*1,
+        "skills":skills
+    }
+    closeInterfaces[0].click();
+    jsonToSend=JSON.stringify(jsonData);
+    sendJsonToApi(jsonToSend,"input");
+}
 tomporaryShifts = [];
 locationPlantConfirmBtn.onclick = function () {
     showElement(addShiftModal);
@@ -442,9 +479,9 @@ function generateJson(locations, workers) {
     };
 }
 
-async function sendJsonToApi(jsonData) {
+async function sendJsonToApi(jsonData,endpoint="test") {
     try {
-        const response = await fetch('http://127.0.0.1:5000/test', {
+        const response = await fetch(`http://127.0.0.1:5000/${endpoint}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -458,6 +495,8 @@ async function sendJsonToApi(jsonData) {
 
         const result = await response.json();
         console.log('Response from API:', result);
+        localStorage.setItem("output2",JSON.stringify(result));
+        window.location.href="../pages/output2.html";
         return result;
     } catch (error) {
         console.error('Error:', error);

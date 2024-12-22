@@ -67,6 +67,7 @@
 
         </div>
         <div class="workspace" id="workspace">
+            <button id="generationButton" style="position:absolute; margin:20px; bottom:0; width: fit-content;height:50px;padding:10px;cursor:pointer;background-color: rgba(0,0,128,0.7);border:none;border-radius: 20px;color:white;">Generate automatically</button>
             <div class="button-panel">
                 <button id="solveButton"> Solve </button>
             </div>
@@ -110,6 +111,25 @@
             <div id="workerSkills">
             </div>
             <button id="addWorker" disabled>Create</button>
+        </div>
+    </div>
+    <div id="addGenerationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeWorkerModal">&times;</span>
+            <h2>Generate randomly</h2>
+            <div class="input-block">
+                <p class="input-label">Number of workers</p>
+                <input type="text" id="nbWorker" name="nbWorker">
+            </div>
+            <div class="input-block">
+                <p class="input-label">Number of locations</p>
+                <input type="text" id="nbLocation" name="nbLocation">
+            </div> 
+            <div class="input-block">
+                <p class="input-label">Number of shifts per day</p>
+                <input type="text" id="nbShift" name="nbShift">
+            </div> 
+            <button id="generateConfirm" disabled>Generate</button>
         </div>
     </div>
     <div id="shiftModal" class="modal">

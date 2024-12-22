@@ -266,6 +266,13 @@
     background-color: grey;
     cursor: not-allowed;
 }
+#addGenerationModal .modal-content{
+    padding: 20px;
+    width: fit-content;
+}
+#addGenerationModal input{
+    width: 300px;
+}
 
 .modal-content #skills-label {
     margin: 10px;
