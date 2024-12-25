@@ -5,8 +5,7 @@
 1. **Clone the Repository**
 
    ```sh
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/Nova-VI/Operations-research.git
    ```
 
 2. **Install Dependencies**
@@ -48,6 +47,3 @@
 - npm
 - Flask (for the API)
 
-## License
-
-This project is licensed under the MIT License.
