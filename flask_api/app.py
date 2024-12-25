@@ -5,7 +5,7 @@ import json
 app = Flask(__name__)
 
 @app.route('/test', methods=['POST'])
-def receive_json():
+def test_endpoint():
     data=request.get_json()
     response=receive_json(data)
     return response
@@ -13,7 +13,7 @@ def receive_json():
 
 
 @app.route('/input', methods=['POST'])
-def test_endpoint():
+def input_endpoint():
 
     data = request.get_json()
     if not data:

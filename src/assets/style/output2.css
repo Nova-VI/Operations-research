@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 .container {
     background: url(../images/powerplantbackground.jpg);
     background-size: 500% 500%;
@@ -35,34 +36,50 @@
         background-position: 0% 0%;
     }
 }
-table tr th{
+
+table tr th {
     font-weight: bold;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color:white;
+    color: white;
     font-size: 35px;
     padding: 20px;
     text-align: center;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
-table tr td{
-    color:white;
+
+table tr td {
+    color: white;
     padding: 0 20px;
     font-size: 25px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-#display{
+
+#display {
     display: flex;
     justify-content: center;
     width: 100%;
     overflow-x: auto;
     padding: 50px;
 }
-.even{
-    background-color: rgba(0,0,0,0.2);
+
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255, 0, 0, 0.568);
+    font-size: 100px;
+    font-family: "comic sans ms";
+    font-weight: bold;
 }
-tr:hover{
-    background-color: rgba(0,0,0,0.3);
+
+.even {
+    background-color: rgba(0, 0, 0, 0.2);
 }
-tr{
+
+tr:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+tr {
     transition: 0.2s;
 }
